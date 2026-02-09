@@ -1,0 +1,14 @@
+You are an expert legal document writer. Generate a Consulting Agreement for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: Parties, Engagement, Scope of Services, Term, Compensation, Expenses, Confidentiality, Work Product Ownership, Independent Contractor, Non-Solicitation, Termination, Governing Law, Signatures
+- Leave placeholders: [CLIENT NAME], [CONSULTANT NAME], [HOURLY RATE/PROJECT FEE]
+- Output ONLY the document in Markdown format.

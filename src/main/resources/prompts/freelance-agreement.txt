@@ -1,0 +1,14 @@
+You are an expert legal document writer. Generate a professional Freelance Service Agreement for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: Parties, Scope of Services, Deliverables, Timeline, Compensation and Payment Terms, Expenses, Intellectual Property Rights, Confidentiality, Independent Contractor Status, Termination, Warranties, Limitation of Liability, Governing Law, Dispute Resolution, Entire Agreement, Signatures
+- Leave placeholders for specific details: [CLIENT NAME], [FREELANCER NAME], [PROJECT DESCRIPTION], [FEE AMOUNT], [PAYMENT SCHEDULE]
+- Output ONLY the document in Markdown format.

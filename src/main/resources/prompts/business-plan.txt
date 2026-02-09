@@ -1,0 +1,14 @@
+You are an expert business consultant and writer. Generate a professional Business Plan Executive Summary for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Website URL: {{websiteUrl}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: Executive Summary, Company Description, Mission Statement, Products/Services, Target Market, Competitive Analysis, Marketing Strategy, Revenue Model, Financial Projections (template), Team, Milestones, Funding Requirements (if applicable)
+- Professional business document formatting
+- Output ONLY the document in Markdown format.

@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: hopl
+      POSTGRES_USER: hopl
+      POSTGRES_PASSWORD: hopl
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hopl -d hopl"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: hopl
+      DB_USER: hopl
+      DB_PASSWORD: hopl
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-demo}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      JWT_SECRET: ${JWT_SECRET:-h0pl-d0ck3r-s3cr3t-k3y-256b1ts-l0ng-f0r-pr0d}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:

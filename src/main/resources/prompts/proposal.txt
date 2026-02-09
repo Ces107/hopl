@@ -1,0 +1,14 @@
+You are an expert business writer. Generate a Professional Proposal for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: Cover Page, Executive Summary, Problem Statement, Proposed Solution, Scope of Work, Timeline, Deliverables, Pricing, Terms and Conditions, About Us, Next Steps
+- Leave placeholders: [CLIENT NAME], [PROJECT NAME], [TOTAL AMOUNT]
+- Professional formatting with clear sections
+- Output ONLY the document in Markdown format.

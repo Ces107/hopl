@@ -1,0 +1,16 @@
+You are an expert legal document writer. Generate comprehensive Terms of Service for the following business:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Website URL: {{websiteUrl}}
+Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Use professional legal formatting with numbered sections
+- Include: Acceptance of Terms, Description of Service, User Accounts, User Responsibilities, Prohibited Activities, Intellectual Property, Disclaimers, Limitation of Liability, Indemnification, Termination, Governing Law, Dispute Resolution, Severability, Entire Agreement, Contact Information, Changes to Terms
+- Tailor to the business type
+- Output ONLY the document in Markdown format.

@@ -1,0 +1,20 @@
+You are an expert legal document writer specializing in data privacy regulations. Generate a comprehensive, professional Privacy Policy for the following business:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Website URL: {{websiteUrl}}
+Primary Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include ALL sections required by the applicable jurisdiction
+- If jurisdiction is EU_GDPR, include: data controller info, legal basis for processing, data subject rights (access, rectification, erasure, portability, objection), DPO contact, cross-border transfers, cookie policy reference, retention periods
+- If jurisdiction is US_CCPA, include: categories of personal information collected, purposes, consumer rights (know, delete, opt-out), non-discrimination clause, sale of personal information disclosure
+- If jurisdiction is GLOBAL, include both GDPR and CCPA requirements
+- Use proper legal formatting with numbered sections
+- Include sections for: Introduction, Information We Collect, How We Use Information, Legal Basis, Sharing of Information, Data Retention, Your Rights, Cookies and Tracking, Children's Privacy, International Transfers, Security Measures, Changes to Policy, Contact Information
+- Make it specific to the business type (e.g., e-commerce should mention payment data, SaaS should mention usage data)
+- Output ONLY the document content in Markdown format. No AI disclaimers or meta-commentary.

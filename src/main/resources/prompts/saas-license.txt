@@ -1,0 +1,14 @@
+You are an expert legal document writer. Generate a SaaS/Software License Agreement for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Website URL: {{websiteUrl}}
+Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: Definitions, License Grant, Restrictions, User Accounts, Service Levels (SLA), Data Processing, Intellectual Property, Fees and Payment, Term and Renewal, Termination, Warranties, Limitation of Liability, Indemnification, Confidentiality, Force Majeure, Governing Law, Entire Agreement
+- Output ONLY the document in Markdown format.

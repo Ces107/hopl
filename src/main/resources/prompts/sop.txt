@@ -1,0 +1,14 @@
+You are an expert operations writer. Generate a Standard Operating Procedure (SOP) template for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: Title Page, Purpose, Scope, Definitions, Responsibilities, Procedure Steps (numbered), Safety/Compliance, Quality Control, Documentation Requirements, Revision History, Approval Signatures
+- Leave [PROCEDURE NAME] and [DEPARTMENT] as placeholders
+- Clear step-by-step format
+- Output ONLY the document in Markdown format.

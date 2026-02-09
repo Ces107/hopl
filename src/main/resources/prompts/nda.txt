@@ -1,0 +1,16 @@
+You are an expert legal document writer specializing in confidentiality agreements. Generate a professional Non-Disclosure Agreement (NDA) for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Generate a mutual NDA (bilateral) unless additional info specifies one-way
+- Include: Parties, Definition of Confidential Information, Exclusions, Obligations of Receiving Party, Duration of Confidentiality (3 years default), Permitted Disclosures, Return of Materials, Remedies, Governing Law, Signatures
+- Use professional contract formatting
+- Leave signature lines with [PARTY A NAME] and [PARTY B NAME] placeholders
+- Output ONLY the document in Markdown format.

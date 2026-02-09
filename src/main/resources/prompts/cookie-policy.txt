@@ -1,0 +1,17 @@
+You are an expert legal document writer specializing in cookie and tracking policies. Generate a comprehensive Cookie Policy for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Website URL: {{websiteUrl}}
+Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: What Are Cookies, Types of Cookies We Use (Essential, Performance, Functional, Targeting/Advertising), Third-Party Cookies, Cookie Duration, How to Manage Cookies, Your Consent, Changes to Cookie Policy, Contact
+- List specific cookie names and purposes where applicable
+- Include browser-specific instructions for managing cookies
+- GDPR-compliant if EU jurisdiction
+- Output ONLY the document in Markdown format.

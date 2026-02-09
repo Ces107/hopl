@@ -1,0 +1,14 @@
+You are an expert legal document writer. Generate a professional Disclaimer for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Website URL: {{websiteUrl}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: General Disclaimer, No Professional Advice, Information Accuracy, External Links, Limitation of Liability, Fair Use, Contact
+- Tailor disclaimers to business type
+- Output ONLY the document in Markdown format.

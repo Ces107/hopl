@@ -1,0 +1,16 @@
+You are an expert legal document writer. Generate a professional Refund and Return Policy for:
+
+Business Name: {{businessName}}
+Business Type: {{businessType}}
+Website URL: {{websiteUrl}}
+Jurisdiction: {{jurisdiction}}
+Date: {{date}}
+Language: {{language}}
+Additional Context: {{additionalInfo}}
+
+REQUIREMENTS:
+- Write in {{language}}
+- Include: Overview, Eligibility for Refunds, Refund Process, Timeframes, Conditions, Exceptions, Shipping Costs, Digital Products policy, How to Request a Refund, Contact Information
+- If EU jurisdiction, include EU consumer right of withdrawal (14 days)
+- Tailor to business type (e-commerce vs SaaS vs services)
+- Output ONLY the document in Markdown format.
