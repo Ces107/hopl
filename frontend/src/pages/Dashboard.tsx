@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
 import { GeneratedDocument } from '../types';
-import { FileText, Plus, Search, Download } from 'lucide-react';
+import { FileText, Plus, Search, Download, CreditCard } from 'lucide-react';
 
 export default function Dashboard() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [documents, setDocuments] = useState<GeneratedDocument[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      navigate('/login', { state: { from: '/dashboard' }, replace: true });
+    }
+  }, [authLoading, isAuthenticated, navigate]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -16,16 +23,17 @@ export default function Dashboard() {
     }
   }, [isAuthenticated]);
 
-  if (!isAuthenticated) {
+  if (authLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="text-center">
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Please log in</h2>
-          <Link to="/login" className="rounded-lg bg-brand-600 px-6 py-3 font-medium text-white">Log in</Link>
-        </div>
+      <div className="flex h-96 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-600 border-t-transparent" />
       </div>
     );
   }
+
+  if (!isAuthenticated) return null;
+
+  const hasCredits = user && (user.credits > 0 || user.plan === 'PRO' || user.plan === 'ANNUAL_GUARD');
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -49,6 +57,22 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Credits warning */}
+      {!hasCredits && (
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-900/10">
+          <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+          <div className="flex-1">
+            <p className="font-medium text-amber-800 dark:text-amber-400">No credits available</p>
+            <p className="mt-1 text-sm text-amber-700 dark:text-amber-500">
+              Purchase a plan to generate more documents.
+            </p>
+          </div>
+          <Link to="/pricing" className="shrink-0 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700">
+            Get Credits
+          </Link>
+        </div>
+      )}
 
       {/* Documents */}
       <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Your Documents</h2>

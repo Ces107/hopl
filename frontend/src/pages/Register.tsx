@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
 import { Shield } from 'lucide-react';
@@ -12,6 +12,9 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = (location.state as any)?.from || '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +23,7 @@ export default function Register() {
     try {
       const { data } = await api.post('/auth/register', { email, password, name });
       login(data.token);
-      navigate('/dashboard');
+      navigate(from, { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.error || 'Registration failed');
     } finally {
@@ -34,7 +37,7 @@ export default function Register() {
         <div className="mb-8 text-center">
           <Shield className="mx-auto mb-4 h-12 w-12 text-brand-600" />
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Create your account</h1>
-          <p className="text-gray-500">Start generating legal documents in seconds</p>
+          <p className="text-gray-500">Get 1 free document credit to try HOPL</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">{error}</div>}
@@ -59,7 +62,7 @@ export default function Register() {
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-gray-500">
-          Already have an account? <Link to="/login" className="font-medium text-brand-600 hover:text-brand-700">Log in</Link>
+          Already have an account? <Link to="/login" state={{ from }} className="font-medium text-brand-600 hover:text-brand-700">Log in</Link>
         </p>
       </div>
     </div>

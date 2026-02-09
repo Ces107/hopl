@@ -1,11 +1,15 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Check, Zap } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import api from '../api/client';
 
 const plans = [
   {
     name: 'Quick Fix',
     price: '4.99',
     period: 'one-time',
+    planType: 'QUICK_FIX',
     description: '1 AI-generated document',
     features: ['1 document of your choice', 'AI-powered customization', 'PDF download', 'Multi-language support'],
     cta: 'Get Started',
@@ -15,6 +19,7 @@ const plans = [
     name: 'Full Compliance',
     price: '29.99',
     period: 'one-time',
+    planType: 'FULL_COMPLIANCE',
     description: 'All documents for your website',
     features: ['All 15 document types', 'AI-powered customization', 'PDF download', 'Multi-jurisdiction', 'Embed-ready HTML', 'Multi-language support'],
     cta: 'Fix Everything',
@@ -24,6 +29,7 @@ const plans = [
     name: 'Annual Guard',
     price: '49.99',
     period: '/year',
+    planType: 'ANNUAL_GUARD',
     description: 'Full compliance + annual updates',
     features: ['Everything in Full Compliance', 'Annual document updates', 'Law change notifications', 'Priority support', 'Re-generate anytime'],
     cta: 'Stay Protected',
@@ -33,6 +39,7 @@ const plans = [
     name: 'Pro',
     price: '19.99',
     period: '/month',
+    planType: 'PRO',
     description: 'Unlimited websites & documents',
     features: ['Unlimited documents', 'Unlimited websites', 'Monthly re-scans', 'Priority support', 'API access', 'Team members'],
     cta: 'Go Pro',
@@ -41,6 +48,32 @@ const plans = [
 ];
 
 export default function Pricing() {
+  const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const handlePlanClick = async (planType: string) => {
+    if (!isAuthenticated) {
+      navigate('/register', { state: { from: '/pricing' } });
+      return;
+    }
+
+    setLoadingPlan(planType);
+    try {
+      const { data } = await api.post('/payments/checkout', {
+        planType,
+        successUrl: window.location.origin + '/dashboard?payment=success',
+        cancelUrl: window.location.origin + '/pricing',
+      });
+      window.location.href = data.url;
+    } catch (err: any) {
+      const msg = err.response?.data?.error || 'Payment setup failed. Stripe may not be configured.';
+      alert(msg);
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
       <div className="mb-12 text-center">
@@ -50,6 +83,11 @@ export default function Pricing() {
         <p className="text-lg text-gray-600 dark:text-gray-400">
           No hidden fees. No subscriptions required. Pay only for what you need.
         </p>
+        {isAuthenticated && user && (
+          <p className="mt-2 text-sm text-brand-600">
+            Current plan: <span className="font-semibold">{user.plan}</span> &middot; Credits: <span className="font-semibold">{user.credits}</span>
+          </p>
+        )}
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -82,15 +120,23 @@ export default function Pricing() {
                 </li>
               ))}
             </ul>
-            <Link to="/register"
+            <button
+              onClick={() => handlePlanClick(plan.planType)}
+              disabled={loadingPlan === plan.planType}
               className={`flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition ${
                 plan.popular
-                  ? 'bg-brand-600 text-white hover:bg-brand-700'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300'
+                  ? 'bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-50'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 disabled:opacity-50'
               }`}>
-              {plan.popular && <Zap className="h-4 w-4" />}
-              {plan.cta}
-            </Link>
+              {loadingPlan === plan.planType ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+              ) : (
+                <>
+                  {plan.popular && <Zap className="h-4 w-4" />}
+                  {plan.cta}
+                </>
+              )}
+            </button>
           </div>
         ))}
       </div>

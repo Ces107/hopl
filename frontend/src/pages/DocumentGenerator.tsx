@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import api from '../api/client';
 import { DocumentType as DocType } from '../types';
-import { FileText, Sparkles } from 'lucide-react';
+import { FileText, Sparkles, AlertTriangle, CreditCard } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function DocumentGenerator() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { isAuthenticated, user, loading: authLoading, refreshUser } = useAuth();
   const [types, setTypes] = useState<DocType[]>([]);
   const [form, setForm] = useState({
     documentType: '',
@@ -20,34 +22,93 @@ export default function DocumentGenerator() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [needsCredits, setNeedsCredits] = useState(false);
 
   useEffect(() => {
     api.get('/documents/types').then(r => setTypes(r.data));
   }, []);
 
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      navigate('/login', { state: { from: '/documents/generate' }, replace: true });
+    }
+  }, [authLoading, isAuthenticated, navigate]);
+
+  const hasCredits = user && (user.credits > 0 || user.plan === 'PRO' || user.plan === 'ANNUAL');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setNeedsCredits(false);
     try {
       const { data } = await api.post('/documents/generate', form);
+      await refreshUser();
       navigate(`/documents/${data.id}`);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Generation failed. Please try again.');
+      if (err.response?.status === 402) {
+        setNeedsCredits(true);
+      } else {
+        setError(err.response?.data?.error || 'Generation failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-brand-600 border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Generate Document</h1>
         <p className="text-gray-500">AI will create a professional document customized to your business.</p>
+        {user && (
+          <p className="mt-1 text-sm text-brand-600">
+            Credits available: <span className="font-semibold">{user.credits}</span>
+          </p>
+        )}
       </div>
 
+      {!hasCredits && (
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-900/10">
+          <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+          <div>
+            <p className="font-medium text-amber-800 dark:text-amber-400">No credits available</p>
+            <p className="mt-1 text-sm text-amber-700 dark:text-amber-500">
+              You need credits to generate documents.{' '}
+              <Link to="/pricing" className="font-semibold underline hover:no-underline">Get a plan</Link>
+            </p>
+          </div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">{error}</div>}
+        {error && (
+          <div className="flex items-start gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            {error}
+          </div>
+        )}
+
+        {needsCredits && (
+          <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-900/10">
+            <CreditCard className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+            <div>
+              <p className="font-medium text-amber-800 dark:text-amber-400">No credits remaining</p>
+              <p className="mt-1 text-sm text-amber-700 dark:text-amber-500">
+                Purchase a plan to continue generating documents.{' '}
+                <Link to="/pricing" className="font-semibold underline hover:no-underline">View plans</Link>
+              </p>
+            </div>
+          </div>
+        )}
 
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Document Type</label>
@@ -124,7 +185,7 @@ export default function DocumentGenerator() {
             className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white" />
         </div>
 
-        <button type="submit" disabled={loading || !form.documentType || !form.businessName}
+        <button type="submit" disabled={loading || !form.documentType || !form.businessName || !hasCredits}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-600 py-4 text-lg font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50">
           {loading ? (
             <>
