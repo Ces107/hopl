@@ -18,7 +18,7 @@ COPY --from=frontend-build /app/frontend/dist ./src/main/resources/static
 RUN ./mvnw clean package -DskipTests -q
 
 # Stage 3: Runtime
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
 RUN addgroup -S hopl && adduser -S hopl -G hopl
