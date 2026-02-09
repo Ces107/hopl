@@ -7,7 +7,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Build backend
-FROM maven:3.9-eclipse-temurin-17-alpine AS backend-build
+FROM maven:3-eclipse-temurin-25-alpine AS backend-build
 WORKDIR /app
 COPY pom.xml ./
 COPY .mvn .mvn
