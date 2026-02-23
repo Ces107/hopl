@@ -23,7 +23,7 @@
         <jjwt.version>0.13.0</jjwt.version>
         <stripe.version>25.10.0</stripe.version>
         <jsoup.version>1.22.1</jsoup.version>
-        <openpdf.version>2.0.2</openpdf.version>
+        <openpdf.version>3.0.1</openpdf.version>
     </properties>
 
     <dependencies>
